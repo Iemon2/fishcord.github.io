@@ -45,7 +45,7 @@ function initializeState() {
         //console.log(this.drawingSurface);
     }
 
-    const state = new State("Kitty.png");
+    const state = new State("../../Assets/default-theme/Kitty.png");
 
     return state;
 }
