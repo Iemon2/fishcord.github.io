@@ -1,0 +1,102 @@
+body {
+    size: 100%;
+    background-color: #cfebec;
+
+    margin: 0;
+    align-items: center;
+    height: 100vh;
+    display: flex;
+}
+
+.centered-horizontal-box {
+    margin: 0 auto;
+    display: flex;
+    width: 195vh;
+}
+
+#side-bar-left {
+    margin: 0 auto;
+    overflow: auto;
+
+    width: 45vh;
+    height: 85vh;
+
+    border-width: 5px;
+    border-style: groove;
+    border-color: #327099;
+    border-radius: 1vw;
+
+    background-color: #deecec;
+}
+
+#center-bar {
+    margin: 0 auto;
+    overflow: auto;
+    display: flex;
+    
+    align-items: center;
+
+    width: 110vh;
+    height: 85vh;
+
+    border-width: 5px;
+    border-style: groove;
+    border-color: #327099;
+    border-radius: 1vw;
+
+    background-color: #deecec;
+}
+
+#side-bar-right {
+    margin: 0 auto;
+    overflow: auto;
+
+    width: 30vh;
+    height: 85vh;
+
+    border-width: 5px;
+    border-style: groove;
+    border-color: #327099;
+    border-radius: 1vw;
+
+    background-color: #deecec;
+}
+
+#games-container {
+    margin: 0 auto;
+    width: 80vh;
+    height: 70vh;
+}
+
+.game {
+    width: 10vh;
+    height: 10vh;
+
+    display: block;
+    white-space: nowrap;
+    overflow: visible;
+    text-overflow: ellipsis;
+
+    border-width: 5px;
+    border-style: groove;
+    border-color: #327099;
+    border-radius: 1vw;
+}
+
+.game > * {
+    position: fixed;
+    top: inherit;
+    left: inherit;
+}
+
+.game > h1 {
+    z-index: 2;
+    margin:auto;
+    width: inherit;
+    font-size: 2vh;
+}
+
+.game > img {
+    width: inherit;
+    height: inherit; 
+}
