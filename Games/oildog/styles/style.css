@@ -1,0 +1,95 @@
+body {
+	background-color: #535353;
+}
+
+p {
+	font-size: 14px;
+}
+
+header {
+	background-color: #7b7b7b;
+	padding: 5px;
+	padding-left: 35px;
+}
+
+main {
+	margin-left: 6%;
+	margin-right: 6%;
+	padding-top: 10px;
+	background-color: #c6c6c6;
+	padding-left: 6px;
+	padding-right: 6px;
+}
+
+#dogbox {
+	display: flex;
+	/*align-items: center;*/
+}
+
+#dogbox div {
+	background-color: #eeeeee;
+	padding: 10px;
+	margin-left: 10px;
+	margin-right: 10px;
+	margin-top: 10px;
+	margin-bottom: 10px;
+	width: 20%;
+	height: 600px;
+}
+#dogbox img {
+	width: 100%;
+}
+
+#stats {
+background-color: #eeeeee;
+margin-left: 20%;
+margin-right: 20%;
+padding-left: 20px;
+padding-right: 20px;
+padding-left: 20px;
+padding-top: 20px;
+padding-bottom: 20px;
+
+}
+
+#shop {
+	display: flex;
+	background-color: #eeeeee;
+	padding-top: 10px;
+	margin-left: 10%;
+	margin-right: 10%;
+	margin-top: 20px;
+	width: 80%;
+	padding-left: 20px;
+	padding-right: 20px;
+	margin-bottom: 10px;
+	
+}
+
+#shop div {
+	width: 20%;
+}
+
+img {
+  image-rendering: pixelated; /* For modern browsers */
+  image-rendering: -moz-crisp-edges; /* Firefox */
+  image-rendering: -webkit-optimize-contrast; /* Chrome, Safari */
+  -ms-interpolation-mode: nearest-neighbor; /* IE */
+}
+
+#upgrades {
+	display: flex;
+	background-color: #eeeeee;
+	padding-top: 10px;
+	margin-left: 3%;
+	margin-right: 5%;
+	margin-top: 20px;
+	width: 90%;
+	padding-left: 20px;
+	padding-right: 20px;
+	margin-bottom: 10px;
+	
+}
+
+#upgrades div {
+	width: 20%;

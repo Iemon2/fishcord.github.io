@@ -1,0 +1,177 @@
+<!DOCTYPE html>
+<html>
+	<head>
+		<title>Oildog Sim</title>
+		<link rel="stylesheet" href="styles/style.css">
+		<script src="scripts/scripts.js"></script>
+	</head>
+	<body onload='loadSaveData()'>
+		<div>
+			<header>
+			<button style='display: none;' onclick="devCash()">one william dollars</button>
+			<button onclick="deleteSave()">erase progress</button>
+			<h1>Oildog Simulator</h1>
+			<h4>by Dokomni</h4>
+			</header>
+		
+			<hr>
+			
+			<main>
+				
+				<div id="stats">
+					<p id="wallet">Money: $15</p>
+				</div>
+				
+				<div id="upgrades">
+					<div id='oilUpgrade1'>
+						<button onclick="upgradeOil(100, document.getElementById('oilUpgrade1'), 1)">Buy Oildog Ink ($100)</button>
+						<p>Doubles the sell value of ripe oildogs.</p>
+						<p><em>Perfect for when you need your paper to be extra flammable.</em></p>
+					</div>
+					<div id='oilUpgrade2'>
+						<button onclick="upgradeOil(1300, document.getElementById('oilUpgrade2'), 2)">Buy Oildog Refinery ($1,300)</button>
+						<p>Doubles the sell value of ripe oildogs.</p>
+						<p><em>Terrible for the environment, but not for profits!</em></p>
+					</div>
+					<div id='wineUpgrade1' style='display: none;'>
+						<button onclick="upgradeWine(700, document.getElementById('wineUpgrade1'))">Buy Winedog Kennel ($700)</button>
+						<p>Triples the max value of winedogs.</p>
+						<p><em>Portable, affordable and better for your winedogs than just locking them in a cellar for forever.</em></p>
+					</div>
+					<div id='carbonUpgrade1' style='display: none;'>
+						<button onclick="upgradeCarbon(10000, document.getElementById('carbonUpgrade1'))">Hire Diamond Fur Stylists ($10,000)</button>
+						<p>Increases the sell value of diamonddogs.</p>
+						<p><em>Somehow, cutting these diamonds actually increases their value.</em></p>
+					</div>
+					<div id='dirkUpgrade1' style='display: none;'>
+						<button onclick="upgradeDirk(50000, document.getElementById('dirkUpgrade1'))">The Unmatched Power Of Hope ($50,000)</button>
+						<p>Increases efficiency of Dirkdogs.</p>
+						<p><em>TALLY HO!!!!</em></p>
+					</div>
+					<div id='equiusUpgrade1' style='display: none;'>
+						<button onclick="upgradeEquius(50000, document.getElementById('equiusUpgrade1'))">Nepetacats ($50,000)</button>
+						<p>Increases efficiency of Equiusdogs.</p>
+						<p><em>These, too, die after the Equiusdogs.</em></p>
+					</div>
+				</div>
+				
+				<div id="shop">
+					<div id='wineUnlock'>
+						<button onclick="unlock(document.getElementById('slot6'), 500, document.getElementById('wineUnlock'), document.getElementById('wineUpgrade1'))">Unlock Winedogs ($500)</button>
+						<p>A dog that grows in sell value by 2.5% every second. Caps at $700.</p>
+						<p><em>Perfect for a dinner with Dirk.</em></p>
+					</div>
+					<div id='carbonUnlock'>
+						<button onclick="unlock(document.getElementById('slot7'), 5000, document.getElementById('carbonUnlock'), document.getElementById('carbonUpgrade1'))">Unlock Carbondogs ($5,000)</button>
+						<p>A dog made of carbon that eventually compresses into diamond. Age multiplies by 1.1 each second.</p>
+						<p><em>Spreading oildog ashes onto a lump of coal makes these. Not actually worth their weight in diamonds... yet.</em></p>
+					</div>
+					<div id='dirkUnlock'>
+						<button onclick="unlock(document.getElementById('slot8'), 25000, document.getElementById('dirkUnlock'), document.getElementById('dirkUpgrade1'))">Buy Dinner With Dirk ($25,000)</button>
+						<p>Unlocks Dirkdogs, whose value depends on their realness amount.</p>
+						<p><em>A canine adaptation of his ponysona.</em></p>
+					</div>
+					<div id='equiusUnlock'>
+						<button onclick="unlock(document.getElementById('slot9'), 25000, document.getElementById('equiusUnlock'), document.getElementById('equiusUpgrade1'))">Buy E-mails from Equius ($25,000)</button>
+						<p>Unlocks Equiusdogs, who passively gain income until they die.</p>
+						<p><em>Dogs don't sweat, so these just pant profusely all the time.</em></p>
+					</div>
+					<div id='dogDogUnlock'>
+						<button onclick="unlock(document.getElementById('slot10'), 250000, document.getElementById('dogDogUnlock'), document.getElementById('equiusUpgrade1'))">Buy Nuclear Rods ($250,000)</button>
+						<p>Unlocks Dogdogs, which increase in... dogginess??</p>
+						<p><em>Like that one cartoon! You know the one.</em></p>
+					</div>
+				</div>
+				
+
+				
+				<div id="dogbox">
+					<div id="slot1">
+						<p id='breed1' style="display: none;">0</p>
+						<img id="dogSprite1" src="./images/none.webp"> <br>
+						<button onclick='dog1Buy()' id="pityDog">Buy Oildog ($10)</button>	
+						<button onclick='dog1Sell()' id="sell1">Sell Dog</button>
+						<p id="age1">Dog is 0 seconds old</p>
+						<p id="iterations1">No dog yet!</p>
+					</div>
+					<div id="slot2">
+						<p id='breed2' style="display: none;">0</p>
+						<img id="dogSprite2" src="./images/none.webp"> <br>
+						<button onclick='dog2Buy()'>Buy Oildog ($10)</button>
+						<button onclick='dog2Sell()' id="sell2">Sell Dog</button>
+						<p id="age2">Dog is 0 seconds old</p>
+						<p id="iterations2">No dog yet!</p>
+					</div>
+					<div id="slot3">
+						<p id='breed3' style="display: none;">0</p>
+						<img id="dogSprite3" src="./images/none.webp"> <br>
+						<button onclick='dog3Buy()'>Buy Oildog ($10)</button>
+						<button onclick='dog3Sell()' id="sell3">Sell Dog</button>
+						<p id="age3">Dog is 0 seconds old</p>
+						<p id="iterations3">No dog yet!</p>
+					</div>
+					<div id="slot4">
+						<p id='breed4' style="display: none;">0</p>
+						<img id="dogSprite4" src="./images/none.webp"> <br>
+						<button onclick='dog4Buy()'>Buy Oildog ($10)</button>
+						<button onclick='dog4Sell()' id="sell4">Sell Dog</button>
+						<p id="age4">Dog is 0 seconds old</p>
+						<p id="iterations4">No dog yet!</p>
+					</div>
+					<div id="slot5">
+						<p id='breed5' style="display: none;">0</p>
+						<img id="dogSprite5" src="./images/none.webp"> <br>
+						<button onclick='dog5Buy()'>Buy Oildog ($10)</button>
+						<button onclick='dog5Sell()' id="sell5">Sell Dog</button>
+						<p id="age5">Dog is 0 seconds old</p>
+						<p id="iterations5">No dog yet!</p>
+					</div>
+				</div>
+				<div id="dogbox">
+					<div id="slot6" style="display: none;">
+						<p id='breed6' style="display: none;">0</p>
+						<img id="dogSprite6" src="./images/none.webp"> <br>
+						<button onclick='dog6Buy()'>Buy Winedog ($30)</button>
+						<button onclick='dog6Sell()' id="sell6">Sell Dog</button>
+						<p id="age6">Dog is worth $0</p>
+						<p id="iterations6">No dog yet!</p>
+					</div>
+					<div id="slot7" style="display: none;">
+						<p id='breed7' style="display: none;">0</p>
+						<img id="dogSprite7" src="./images/none.webp"> <br>
+						<button onclick='dog7Buy()'>Buy Carbondog ($200)</button>
+						<button onclick='dog7Sell()' id="sell7">Sell Dog</button>
+						<p id="age7">Dog is 0 seconds old</p>
+						<p id="iterations7">No dog yet!</p>
+					</div>
+					<div id="slot8" style="display: none;">
+						<p id='breed8' style="display: none;">0</p>
+						<img id="dogSprite8" src="./images/dirkdog.webp"> <br>
+						<button onclick='dog8Buy()'>Buy Dirkdog ($300)</button>
+						<button onclick='dog8Sell()' id="sell8">Sell Dog</button>
+						<p id="age8">Dog is 0 seconds old</p>
+						<p id="iterations8">No dog yet!</p>
+					</div>
+					<div id="slot9" style="display: none;">
+						<p id='breed9' style="display: none;">0</p>
+						<img id="dogSprite9" src="./images/none.webp"> <br>
+						<button onclick='dog9Buy()'>Buy Equiusdog ($300)</button>
+						<button onclick='dog9Sell()' id="sell9">Sell Dog</button>
+						<p id="age9">Dog is 0 seconds old</p>
+						<p id="iterations9">No dog yet!</p>
+					</div>
+					<div id="slot10" style="display: none">
+						<p id='breed10' style="display: none;">0</p>
+						<img id="dogSprite10" src="./images/none.webp"> <br>
+						<button onclick='dog10Buy()'>Buy Dogdog ($1000)</button>
+						<!--  <button onclick='dog10Sell()' id="sell10">Sell Dog</button>  -->
+						<p id="age10">Dog is 0 seconds old</p>
+						<p id="iterations10">No dog yet!</p>
+						<p>these are Fucking Useless anyays CONGRATS ON BEITING OILDOG SIM WOOOOO</p>
+					</div>
+				</div>
+			</main>
+			
+		</div>
+	</body>
+</html>
