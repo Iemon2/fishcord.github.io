@@ -63,12 +63,22 @@ body {
 }
 
 #games-container {
+    display: grid;
+    grid-template-columns: 25% 25% 25% 25%;
     margin: 0 auto;
+
     width: 80vh;
     height: 70vh;
+
+
 }
 
 .game {
+    size: auto;
+    padding: auto;
+}
+
+.game > a{
     width: 10vh;
     height: 10vh;
 
@@ -83,20 +93,20 @@ body {
     border-radius: 1vw;
 }
 
-.game > * {
+.game > a > * {
     position: fixed;
     top: inherit;
     left: inherit;
 }
 
-.game > h1 {
+.game > a > h1 {
     z-index: 2;
     margin:auto;
     width: inherit;
     font-size: 2vh;
 }
 
-.game > img {
+.game > a > img {
     width: inherit;
     height: inherit; 
 }
