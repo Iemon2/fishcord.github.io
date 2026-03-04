@@ -6,22 +6,7 @@ let ctx;
 let planets = [];
 let gravObjects = [];
 
-const PLANET = {
-    x: 0,
-    y: 0,
-    radius: 10,
-    gravity: 9.8,
-    circle: new Path2D()
-}
-
-const GRAV_OBJ = {
-    x: 0,
-    y: 0,
-    radius: 10,
-    inMotion: true,
-    circle: new Path2D()
-}
-
+let instruction = 0;
 
 //---------------------------------------------------------------
 //basic functions
@@ -48,16 +33,38 @@ function clickHandler(e) {
 
 function update() {
     window.requestAnimationFrame(update);
-    physics();
-    render();
-    console.log("meow");
+    if (instruction == 0) {
+        physics();
+        instruction++;
+        //console.log("physical meow");
+    }
+    else if (instruction == 1) {
+        render();
+        instruction = 0;
+        //console.log("rendering meow");
+    }
 }
 
 
 //---------------------------------------------------------------
 //physics
 function physics() {
-
+    for (i = 0; i < gravObjects.length; i++) {
+        let grav = [[0, 0, 0], [0, 0, 0]];
+        for (j = 0; j < planets.length; j++) {
+            distance = getDistance2D([gravObjects[i].x, gravObjects[i].y], [planets[j].x, planets[j].y])
+            grav[j][0] = calculateGrav(planets[j].mass, distance[0]);
+            grav[j][1] = calculateGrav(planets[j].mass, distance[1]);
+            grav[j][2] = calculateGrav(planets[j].mass, distance[2]);
+        }
+        for (j = 0; j < grav.length; j++) {
+            gravObjects[i].x = (grav[j][1] / 1e5) + gravObjects[i].x;
+            gravObjects[i].y = (grav[j][2] / 1e5) + gravObjects[i].y;
+            //gravObjects[i].x = 1 + gravObjects[i].x;
+            console.log(gravObjects);
+            moveShape(gravObjects[i]);
+        }
+    }
 }
 
 
@@ -92,12 +99,8 @@ function renderObjects() {
 }
 
 function drawCircle(coordinates, circle, color) {
-    console.log(circle);
-    ctx.moveTo(coordinates[0], coordinates[1]);
     ctx.strokeStyle = color;
-    ctx.beginPath(circle);
     ctx.fill(circle);
-    ctx.closePath(circle);
     
 }
 
@@ -106,16 +109,30 @@ function drawCircle(coordinates, circle, color) {
 //summoning spells
 function addPlanet(centeredCoordinates) {
     let coordinates = centeredToNormal(centeredCoordinates);
-    let planet = new Object(PLANET);
-    planet.x = coordinates.x;
-    planet.y = coordinates.y;
+    let planet = {
+        x: 0,
+        y: 0,
+        radius: 10,
+        mass: 2,
+        circle: new Path2D()
+    }
+    planet.x = coordinates[0];
+    planet.y = coordinates[1];
     planet.radius = 350;
     planet.circle.arc(coordinates[0], coordinates[1], planet.radius, 0, 2 * Math.PI);
     planets.push(planet);
 }
 
 function addGravObj(coordinates) {
-    let gravObj = new Object(GRAV_OBJ);
+    let gravObj = {
+        id: 0,
+        x: 0,
+        y: 0,
+        radius: 10,
+        inMotion: true,
+        circle: new Path2D()
+    };
+    gravObj.id = Math.random();
     gravObj.x = coordinates[0];
     gravObj.y = coordinates[1];
     gravObj.radius = 50;
@@ -125,10 +142,49 @@ function addGravObj(coordinates) {
 
 
 //---------------------------------------------------------------
+//transmutation spell
+function moveShape(object) {
+    object.circle = new Path2D();
+    object.circle.arc(object.x, object.y, object.radius, 0, 2 * Math.PI);
+}
+
+//---------------------------------------------------------------
 //math and utility
 function centeredToNormal(coordinates) {
     coordinates[0] = coordinates[0] + window.innerWidth/2;
     coordinates[1] = coordinates[1] + window.innerHeight/2;
-    console.log(coordinates);
     return coordinates;
+}
+
+function Q_rsqrt(number)
+{ 
+    var i;
+    var x2, y;
+    const threehalfs = 1.5;
+  
+    x2 = number * 0.5;
+    y = number;
+    //evil floating bit level hacking
+    var buf = new ArrayBuffer(4);
+    (new Float32Array(buf))[0] = number;
+    i =  (new Uint32Array(buf))[0];
+    i = (0x5f3759df - (i >> 1)); //What the fuck?
+    (new Uint32Array(buf))[0] = i;
+    y = (new Float32Array(buf))[0];
+    y  = y * ( threehalfs - ( x2 * y * y ) );   // 1st iteration
+//  y  = y * ( threehalfs - ( x2 * y * y ) );   // 2nd iteration, this can be removed
+
+    return y;
+}
+
+function getDistance2D(point1, point2) {
+    x = point1[0] - point2[0];
+    y = point1[1] - point2[1];
+    mag = Math.sqrt((x * x) + (y * y));
+    return [mag, x, y];
+}
+
+function calculateGrav(mass, distance) {
+    g = Q_rsqrt((6.674e-11) * mass / distance);
+    return g;
 }
