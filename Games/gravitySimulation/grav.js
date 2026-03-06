@@ -5,6 +5,7 @@ let ctx;
 
 let planets = [];
 let gravObjects = [];
+let motionLines = [];
 
 let instruction = 0;
 
@@ -22,6 +23,7 @@ window.onload = function() {
     canvas.height = window.innerHeight;
     ctx = canvas.getContext("2d");
     console.log("canvas loaded");
+    loadMotionLines();
     update();
     console.log("loaded");
 }
@@ -43,6 +45,8 @@ function update() {
         instruction = 0;
         //console.log("rendering meow");
     }
+    //physics();
+    //render();
 }
 
 
@@ -52,19 +56,45 @@ function physics() {
     for (i = 0; i < gravObjects.length; i++) {
         let grav = [[0, 0, 0], [0, 0, 0]];
         for (j = 0; j < planets.length; j++) {
-            distance = getDistance2D([gravObjects[i].x, gravObjects[i].y], [planets[j].x, planets[j].y])
-            grav[j][0] = calculateGrav(planets[j].mass, distance[0]);
-            grav[j][1] = calculateGrav(planets[j].mass, distance[1]);
-            grav[j][2] = calculateGrav(planets[j].mass, distance[2]);
+            grav[j] = calcNextCoordinates([planets[j].x, planets[j].y], [gravObjects[i].x, gravObjects[i].y], planets[j].mass, gravObjects[i].mass);
         }
         for (j = 0; j < grav.length; j++) {
-            gravObjects[i].x = (grav[j][1] / 1e5) + gravObjects[i].x;
-            gravObjects[i].y = (grav[j][2] / 1e5) + gravObjects[i].y;
+            gravObjects[i].x = (grav[j][1]) + gravObjects[i].x;
+            gravObjects[i].y = (grav[j][2]) + gravObjects[i].y;
             //gravObjects[i].x = 1 + gravObjects[i].x;
-            console.log(gravObjects);
             moveShape(gravObjects[i]);
         }
     }
+}
+
+function loadMotionLines() {
+    for(x = 0; x < 8; x++) {
+        for(y = 0; y < 8; y++) {
+            createMotionLine([x, y]);
+        }
+    }
+}
+
+function createMotionLine(startCoords) {
+    let lastLineEnd = startCoords;
+
+    for (k = 0; k < 10; k++) {
+        let grav = [[], []];
+        for (j = 0; j < planets.length; j++) {
+            grav[j] = calcNextCoordinates([planets[j].x, planets[j].y], [lastLineEnd[0], lastLineEnd[0]], planets[j].mass, 20);
+        }
+        let coords = [0, 0];
+        for (i = 0; i < grav.length; i++) {
+            coords[0] = grav[i][1];
+            coords[1] = grav[i][2];
+        } 
+    }
+}
+
+function calcNextCoordinates(mass1Coords, mass2Coords, mass1, mass2) {
+    distance = getDistance2D(mass1Coords, mass2Coords);
+    gravity = calculateGrav(mass1, mass2, distance[1], distance[2], distance[0]);
+    return gravity;
 }
 
 
@@ -98,6 +128,12 @@ function renderObjects() {
     }
 }
 
+function renderLines() {
+    for (i = 0; i < motionLines.length; i++) {
+        ctx.stroke(motionLines[i]);
+    }
+}
+
 function drawCircle(coordinates, circle, color) {
     ctx.strokeStyle = color;
     ctx.fill(circle);
@@ -113,7 +149,7 @@ function addPlanet(centeredCoordinates) {
         x: 0,
         y: 0,
         radius: 10,
-        mass: 2,
+        mass: 8e9,
         circle: new Path2D()
     }
     planet.x = coordinates[0];
@@ -128,6 +164,7 @@ function addGravObj(coordinates) {
         id: 0,
         x: 0,
         y: 0,
+        mass: 20,
         radius: 10,
         inMotion: true,
         circle: new Path2D()
@@ -179,12 +216,22 @@ function Q_rsqrt(number)
 
 function getDistance2D(point1, point2) {
     x = point1[0] - point2[0];
-    y = point1[1] - point2[1];
+    y = -point1[1] + point2[1];
     mag = Math.sqrt((x * x) + (y * y));
     return [mag, x, y];
 }
 
-function calculateGrav(mass, distance) {
-    g = Q_rsqrt((6.674e-11) * mass / distance);
-    return g;
+function calculateGrav(mass1, mass2, dX, dY, dM) {
+    let M = mass1 * mass2
+    // let Fx = (6.67430e-11) * (M / dX * dX);
+    // let Fy = (6.67430e-11) * (M / dY * dY);
+    // let F = Math.sqrt((Fx * Fx) * (Fy * Fy));
+
+    let F = (6.67430e-11) * (M * 300 / dM * dM);
+
+    let Fx = F / dX;
+    let Fy = F / dY;
+    console.log(Fx + ", " + Fy);
+
+    return [F, Fx, Fy];
 }
