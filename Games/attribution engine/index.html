@@ -23,9 +23,19 @@
               <option value="2">bark</option>
         </select>
         <button>idk what yet</button> <br>
-        
-        <button>USE THIS TO CHANGE BELOW</button>
-        <p id="attributeP"></p>
+        <div>
+            <button onclick="getRandomAttribute(document.getElementById('a'))">USE THIS TO CHANGE BELOW</button>
+            <p id="a">new attribute goes here</p>
+            <button onclick="sellNode(document.getElementById('a'), document.getElementById('evilorder'))">SELL (must be equal to order)</button>
+        </div>
+        <br>
+        <br>
+        <div>
+            <h2>EVIL ORDER</h2>
+            <p>evil order is this:</p>
+            <p id="evilorder"></p>
+            <button onclick="getRandomAttribute(document.getElementById('evilorder'))">call order</button>
+        </div>
     </div>
 
 

@@ -53,8 +53,26 @@ const attributes = [
     
 ];
 
-function getRandomAttribute() {
-    meow = Math.ceil(Math.random() * 50);
-    console.log(attributes.filter((item) => item.id == meow));
+function getRandomAttribute(outputArea) {
+    randId = Math.ceil(Math.random() * 50) - 1;
 
+
+    console.log(attributes.find((item) => item.id == randId));
+    
+
+    // TEMP CODE BELOW FOR THE BUTTON TEST
+    woof = attributes.filter((item) => item.id == randId);
+
+    outputArea.innerHTML = woof[0].name;
+}
+
+function sellNode(node, requested) {
+    if ((node.innerHTML == requested.innerHTML) && (node.innerHTML != "")) {
+        node.innerHTML = "";
+        requested.innerHTML = "";
+        console.log("WOW! YOU SOLD THE CORRECT THING!!! GOOD!!")
+    }
+    else {
+        console.log("that is NOT the right one you STUPID IDIOT!!!!!!!!!!!!!!!! TRY AGGAIN")
+    }
 }
