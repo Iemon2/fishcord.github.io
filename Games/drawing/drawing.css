@@ -1,0 +1,65 @@
+body {
+    width: 100vw;
+    height: 100vh;
+    background-color: black;
+    margin: 0;
+    overflow: scroll;
+}
+
+canvas {
+    position: absolute;
+    background-color: aqua;
+}
+
+#overlay {
+    top: 0;
+    left: 0;
+    position: absolute;
+    width: 100vw;
+    height: 100vh;
+}
+
+#overlay > * {
+    z-index: 2;
+}
+
+.menu-bar {
+    background-color: rgb(100, 88, 111);
+}
+
+#side-bar-left {
+    margin-left: 0;
+    margin-right: auto;
+    width: 40px;
+    height: auto;
+}
+
+#side-bar-right {
+    margin-left: auto;
+    margin-right: 0;
+    float: right;
+    width: 40px;
+    height: 100vh;
+}
+
+#top-bar {
+    width: auto;
+    height: 40px;
+}
+
+#canvas-holder-holder {
+    position: absolute;
+    top: 0;
+    left: 0;
+
+    width: 100vw;
+    height: 100vh;
+
+    z-index: 0;
+}
+
+#canvas-holder {
+    position: absolute;
+    top: 0;
+    left: 0;
+}
