@@ -38,8 +38,21 @@
         </div>
         <br>
         <br>
-        <div>
+        <div id="order-box">
             <h2>EVIL ORDER</h2>
+            <p>this guy wants:</p>
+            <p id="order-list"> <!-- TO BE REPLACED WITH A LIST LATER ONCE FUNCTIONAL --> 
+                
+            </p>
+            <table id="mailbox-table">
+                <tr>
+                    <th>Node ID</th>
+                    <th>Attributes</th>
+                </tr>
+            </table>
+            <input type="number" id="inventory-to-order-table">
+            <button onclick="callToMailbox()">Write Node ID to place in order box</button>
+            <br><button onclick="sendOrder()">Send node</button>
         </div>
     </div>
 

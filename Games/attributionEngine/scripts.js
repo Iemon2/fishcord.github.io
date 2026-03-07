@@ -78,9 +78,9 @@ const attributes = [
     
 ];
 const inventoryTable = document.getElementById('inventory-table');
-inventory = [
-    { id: 0, attribute: [(attributes[0])] }
-]
+const mailboxTable = document.getElementById('mailbox-table');
+inventory = []
+mailbox = []
 
 // TODO: update getRandomAttribute to do JUST THAT and return the attribute and its properties from attributes.
 //      have updating the thing set to a different function
@@ -111,7 +111,7 @@ function sellNode(node, requested) {
 function addNewToInventory() {  // TODO: make it so new items are added at the end of the table rather than the start
     //                             (or just sort the table afterwards.. cant be too hard)
 
-    let id = 1; // THIS is copypasted from module 4 code and edited slightly
+    let id = 0; // THIS is copypasted from module 4 code and edited slightly
     for (let i = 1; i < inventory.map(item => item.id).length + 1; i++) { // for each item in inventory,
         //console.log("i = " + i)
         //console.log(inventory[i].id)
@@ -125,10 +125,7 @@ function addNewToInventory() {  // TODO: make it so new items are added at the e
     
 
     inventory.push({id, attribute})
-    //console.log("newid:" + inventory[id])
-
-    invItems = inventoryTable.querySelector('tr')
-    invItems.insertAdjacentHTML('afterend', "<tr>   <th class=\'node-id\'>" + id + "</th>   <th class=\'node-attribute\'>" + attribute[0].name + "</th>   </tr>")
+    sortInventoryTable()
 }
 
 function printInventory() {
@@ -137,42 +134,30 @@ function printInventory() {
 
 
 function removeNodeFromInventory(nodeId) { //TODO: fill empty slots in inventory if node is moved elsewhere to prevent id duping
-    meow = inventory[nodeId]
-    console.log(meow)
-    inventory.splice((nodeId), 1) // removes item at nodeId from backend array
-
-    idList = document.getElementsByClassName('node-id') // gets items in table showing the id
-
-    const entry = inventoryTable.querySelectorAll('tr') // selects all rows
-    
-    for (let i = 1; i < idList.length; i++) { // for each id in node id list:
-        if (idList[i].innerHTML == nodeId) { // if current spot is equal to INPUT node id:
-            entry[i+1].remove() // deletes that row
+    meow = inventory[nodeId] // gets the inventory item so it can be returned in case its needed
+    //console.log(nodeId) 
+    for (i = 0; i < inventory.length; i++) { // loop that goes through each item to check if its id matches that of input
+        if (inventory[i].id == nodeId) {
+            inventory.splice((i), 1)
         }
     }
-
+    
     return meow
 }
 
 function cycleAttributeBy3() { // THIS MONSTROSITY cycles attribute.id of selected node by 3, changing the attribute
-
     input = document.getElementById('node-att-cycler').value // gets input from <input> tag
-    
     inventory[input].attribute[0] = attributes[((inventory[input].attribute[0].id) + 3) % attributes.length] // changes the attribute inside the actual backend inventory
-
     ///console.log(attributes.filter((item) => item.id == inventory[input].attribute.id))
     //console.log(input)
     //console.log(inventory[input].attribute[0].id)
-
     entry = inventoryTable.querySelectorAll('tr')                       // selects all rows, saves as entry
     attributeList = document.getElementsByClassName('node-attribute')   // makes list of items in first column
     idList = document.getElementsByClassName('node-id')                 // makes list of items in second column
-
     //console.log(attributeList)
     //console.log(idList)
     //console.log(idList[0].innerHTML)
     //console.log(3)
-
     meow = -5                                       
     for (i = 0; i < idList.length; i++) {        // THIS THING scrolls through the table to find where Node ID innerHTML is the same as the input
         for (j = 0; i < idList.length; j++) {
@@ -185,7 +170,56 @@ function cycleAttributeBy3() { // THIS MONSTROSITY cycles attribute.id of select
         }
     }
     //console.log(meow)
-
-
     attributeList[meow].innerHTML = inventory[input].attribute[0].name          // sets attribute name in table at input value to new name
+}
+
+function sortInventoryTable() {
+    inventoryTable.innerHTML = '<tr><th>Node ID</th><th>Attributes</th></tr>'
+    for (i = 0; i < inventory.length; i++) {
+        invItems = inventoryTable.querySelector('tr')
+        invItems.insertAdjacentHTML('afterend', "<tr>   <th class=\'node-id\'>" + inventory[i].id + "</th>   <th class=\'node-attribute\'>" + inventory[i].attribute[0].name + "</th>   </tr>")
+    }
+}
+
+function generateOrder() {
+    requestedNode = getRandomAttribute()
+    document.getElementById("order-list").innerHTML = (requestedNode[0].name)
+    console.log(requestedNode)
+}
+generateOrder()
+
+function callToMailbox() { // TODO: fix this function so that if a node id is deleted from middle of array but another item with that id is added later,
+                           //       it will still grab the item with that id
+                           // could probably cut a lot of this out and just reuse code from the increment by 3 function
+    mailbox.splice(0, mailbox.length)
+    mailboxTable.innerHTML = '<tr><th>Node ID</th><th>Attributes</th></tr>'
+    
+    input = document.getElementById('inventory-to-order-table').value
+    console.log(String(inventory[input].id))
+    console.log(input)
+
+
+    
+
+    if ((String(inventory[input].id) == input)) { // here to check if removed item is still in inventory
+        console.log("SHOYLDNT RUN!!")
+
+        sentPackage = removeNodeFromInventory(input)
+        mailbox.push(sentPackage)
+        sortInventoryTable()
+
+        mailItems = mailboxTable.querySelector('tr')
+
+        mailItems.insertAdjacentHTML('afterend', "<tr>   <th class=\'node-id\'>" + mailbox[0].id + "</th>   <th class=\'node-attribute\'>" + mailbox[0].attribute[0].name + "</th>   </tr>")
+    }
+}
+
+function sendOrder() {
+    console.log(mailbox[0].attribute[0].name)
+    console.log(document.getElementById("order-list").innerHTML)
+    if ((mailbox[0].attribute[0].name) == document.getElementById("order-list").innerHTML) {
+        mailbox.splice(0, mailbox.length)
+        mailboxTable.innerHTML = '<tr><th>Node ID</th><th>Attributes</th></tr>'
+        generateOrder()
+    }
 }
