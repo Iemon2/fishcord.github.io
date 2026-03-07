@@ -11,7 +11,7 @@ body {
 .centered-horizontal-box {
     margin: 0 auto;
     display: flex;
-    width: 195vh;
+    width: 100vh;
 }
 
 #side-bar-left {
