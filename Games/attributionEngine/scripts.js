@@ -184,7 +184,7 @@ function cycleAttributeBy3() { // THIS MONSTROSITY cycles attribute.id of select
             }
         }
     }
-    console.log(meow)
+    //console.log(meow)
 
 
     attributeList[meow].innerHTML = inventory[input].attribute[0].name          // sets attribute name in table at input value to new name
