@@ -52,18 +52,25 @@ const attributes = [
     { id: 50, name: "supplementary", conflictsWith: [] }
     
 ];
+const inventoryTable = document.getElementById('inventory-table');
+inventory = [
+    { id: 0, attribute: [(attributes[0])] }
+]
 
-function getRandomAttribute(outputArea) {
+// TODO: update getRandomAttribute to do JUST THAT and return the attribute and its properties from attributes.
+//      have updating the thing set to a different function
+//      ALSO! instead of updating
+
+function getRandomAttribute() {
     randId = Math.ceil(Math.random() * 50) - 1;
 
 
-    console.log(attributes.find((item) => item.id == randId));
+    //console.log(attributes.find((item) => item.id == randId));
     
 
     // TEMP CODE BELOW FOR THE BUTTON TEST
     woof = attributes.filter((item) => item.id == randId);
-
-    outputArea.innerHTML = woof[0].name;
+    return woof;
 }
 
 function sellNode(node, requested) {
@@ -75,4 +82,50 @@ function sellNode(node, requested) {
     else {
         console.log("that is NOT the right one you STUPID IDIOT!!!!!!!!!!!!!!!! TRY AGGAIN")
     }
+}
+
+function addNewToInventory() {  // TODO: make it so new items are added at the end of the table rather than the start
+    //                             (or just sort the table afterwards.. cant be too hard)
+
+    let id = 1; // THIS is copypasted from module 4 code and edited slightly
+    for (let i = 1; i < inventory.map(item => item.id).length + 1; i++) { // for each item in inventory,
+        //console.log("i = " + i)
+        //console.log(inventory[i].id)
+        if ((i != (inventory.map(item => item.id)[(i)])) && (inventory.find(meowie => meowie.id == i) === undefined)) { // if current spot in inventory doesnt exist,
+            //console.log("at this: " + i)
+            id = i                                     // set new id to value of current spot
+            break
+        }
+    }
+    attribute = getRandomAttribute();
+    
+
+    inventory.push({id, attribute})
+    //console.log("newid:" + inventory[id])
+
+    invItems = inventoryTable.querySelector('tr')
+    invItems.insertAdjacentHTML('afterend', "<tr>   <th class=\'node-id\'>" + id + "</th>   <th>" + attribute[0].name + "</th>   </tr>")
+}
+
+function printInventory() {
+    console.log(inventory)
+}
+
+
+function removeNodeFromInventory(nodeId) { //TODO: fill empty slots in inventory if node is moved elsewhere to prevent id duping
+    meow = inventory[nodeId]
+    console.log(meow)
+    inventory.splice((nodeId), 1) // removes item at nodeId from backend array
+
+    idList = document.getElementsByClassName('node-id') // gets items in table showing the id
+
+    const entry = inventoryTable.querySelectorAll('tr') // selects all rows
+    
+    for (let i = 1; i < idList.length; i++) { // for each id in node id list:
+        if (idList[i].innerHTML == nodeId) { // if current spot is equal to INPUT node id:
+            entry[i+1].remove() // deletes that row
+        }
+    }
+
+    return meow
 }
