@@ -35,7 +35,7 @@ const attributes = [
     { id: 33, name: "fast", conflictsWith: [34, 35, 36] },
     { id: 34, name: "supersonic", conflictsWith: [33, 35, 36] },
     { id: 35, name: "slow", conflictsWith: [33, 34, 36] },
-    { id: 36, name: "sluggush", conflictsWith: [33, 34, 35] },
+    { id: 36, name: "sluggish", conflictsWith: [33, 34, 35] },
     { id: 37, name: "cyclous", conflictsWith: [] },
     { id: 38, name: "sclerotic", conflictsWith: [] },
     { id: 39, name: "intrusive", conflictsWith: [] },
@@ -49,7 +49,32 @@ const attributes = [
     { id: 47, name: "experimental", conflictsWith: [] },
     { id: 48, name: "commercial", conflictsWith: [] },
     { id: 49, name: "vital", conflictsWith: [] },
-    { id: 50, name: "supplementary", conflictsWith: [] }
+    { id: 50, name: "foober", conflictsWith: [] },
+    { id: 51, name: "grondle", conflictsWith: [] },
+    { id: 52, name: "onklide", conflictsWith: [] },
+    { id: 53, name: "zorpt", conflictsWith: [] },
+    { id: 54, name: "gond", conflictsWith: [] },
+    { id: 55, name: "atchful", conflictsWith: [] },
+    { id: 56, name: "storf", conflictsWith: [] },
+    { id: 57, name: "golth", conflictsWith: [] },
+    { id: 58, name: "binary", conflictsWith: [] },
+    { id: 59, name: "upplementary", conflictsWith: [] },
+    { id: 60, name: "complementary", conflictsWith: [] },
+    { id: 61, name: "gogoglish", conflictsWith: [] },
+    { id: 62, name: "organic", conflictsWith: [63] },
+    { id: 63, name: "unnatural", conflictsWith: [62] },
+    { id: 64, name: "forb", conflictsWith: [] },
+    { id: 65, name: "idyllic", conflictsWith: [] },
+    { id: 66, name: "untalgic", conflictsWith: [] },
+    { id: 67, name: "fishy", conflictsWith: [] },
+    { id: 68, name: "foshy", conflictsWith: [] },
+    { id: 69, name: "fushi", conflictsWith: [] },
+    { id: 70, name: "bloob", conflictsWith: [] },
+    { id: 71, name: "garnular", conflictsWith: [] },
+    { id: 72, name: "interdoust", conflictsWith: [] },
+    { id: 73, name: "scrambled", conflictsWith: [74] },
+    { id: 74, name: "unscrambled", conflictsWith: [73] },
+    { id: 75, name: "egg", conflictsWith: [] }
     
 ];
 const inventoryTable = document.getElementById('inventory-table');
@@ -62,8 +87,7 @@ inventory = [
 //      ALSO! instead of updating
 
 function getRandomAttribute() {
-    randId = Math.ceil(Math.random() * 50) - 1;
-
+    randId = Math.floor(Math.random() * attributes.length);
 
     //console.log(attributes.find((item) => item.id == randId));
     
@@ -104,7 +128,7 @@ function addNewToInventory() {  // TODO: make it so new items are added at the e
     //console.log("newid:" + inventory[id])
 
     invItems = inventoryTable.querySelector('tr')
-    invItems.insertAdjacentHTML('afterend', "<tr>   <th class=\'node-id\'>" + id + "</th>   <th>" + attribute[0].name + "</th>   </tr>")
+    invItems.insertAdjacentHTML('afterend', "<tr>   <th class=\'node-id\'>" + id + "</th>   <th class=\'node-attribute\'>" + attribute[0].name + "</th>   </tr>")
 }
 
 function printInventory() {
@@ -128,4 +152,40 @@ function removeNodeFromInventory(nodeId) { //TODO: fill empty slots in inventory
     }
 
     return meow
+}
+
+function cycleAttributeBy3() { // THIS MONSTROSITY cycles attribute.id of selected node by 3, changing the attribute
+
+    input = document.getElementById('node-att-cycler').value // gets input from <input> tag
+    
+    inventory[input].attribute[0] = attributes[((inventory[input].attribute[0].id) + 3) % attributes.length] // changes the attribute inside the actual backend inventory
+
+    ///console.log(attributes.filter((item) => item.id == inventory[input].attribute.id))
+    //console.log(input)
+    //console.log(inventory[input].attribute[0].id)
+
+    entry = inventoryTable.querySelectorAll('tr')                       // selects all rows, saves as entry
+    attributeList = document.getElementsByClassName('node-attribute')   // makes list of items in first column
+    idList = document.getElementsByClassName('node-id')                 // makes list of items in second column
+
+    //console.log(attributeList)
+    //console.log(idList)
+    //console.log(idList[0].innerHTML)
+    //console.log(3)
+
+    meow = -5                                       
+    for (i = 0; i < idList.length; i++) {        // THIS THING scrolls through the table to find where Node ID innerHTML is the same as the input
+        for (j = 0; i < idList.length; j++) {
+            //console.log("j = " + j + "; idList[i].innerHTML = " + idList[i].innerHTML + "; DESIRED ITEM IS " + input)
+            //console.log(idList[j])
+            if (idList[j].innerHTML == input) {
+                meow = j
+                break
+            }
+        }
+    }
+    console.log(meow)
+
+
+    attributeList[meow].innerHTML = inventory[input].attribute[0].name          // sets attribute name in table at input value to new name
 }
